@@ -1,15 +1,225 @@
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * Delete the template below * * * * * * * * * -->
-<!-- * * * * * * * to get started with your project! * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- Frontend CRUD - Visualizzazione + Inserimento + Modifica voti -->
 
-<style>
-  :host {
-    --bright-blue: oklch(51.01% 0.274 263.83);
+<div class="container">
+  <header class="header">
+    <h1>{{ title() }}</h1>
+    <p>Gestione Voti - CRUD</p>
+  </header>
+
+  <!-- Messaggi di successo e errore -->
+  <div *ngIf="successMessage()" class="success-message">
+    ✓ {{ successMessage() }}
+  </div>
+
+  <div *ngIf="errorMessage()" class="error-message">
+    ✗ {{ errorMessage() }}
+  </div>
+
+  <!-- Sezione azioni -->
+  <div class="actions-section">
+    <div class="search-section">
+      <label for="studentFilter">Filtra per nome:</label>
+      <input
+        id="studentFilter"
+        type="text"
+        [(ngModel)]="studentNameFilter"
+        (input)="onFilterChange()"
+        placeholder="Inserisci il nome dello studente"
+        class="search-input"
+      />
+    </div>
+
+    <button class="btn btn-primary" (click)="openInsertForm()">
+      + Inserisci Nuovo Voto
+    </button>
+  </div>
+
+  <!-- Caricamento -->
+  <div *ngIf="isLoading()" class="loading">
+    Caricamento voti...
+  </div>
+
+  <!-- Lista dei voti -->
+  <div *ngIf="!isLoading()" class="grades-section">
+    <div *ngIf="filteredGrades().length === 0" class="no-data">
+      <p>
+        {{ studentNameFilter() ? 'Nessun voto trovato per questo studente' : 'Nessun voto disponibile' }}
+      </p>
+    </div>
+
+    <div *ngIf="filteredGrades().length > 0" class="grades-list">
+      <h2>Elenco Voti</h2>
+      <table class="grades-table">
+        <thead>
+          <tr>
+            <th>Studente</th>
+            <th>Materia</th>
+            <th>Voto</th>
+            <th>Data</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let grade of filteredGrades()"
+            [ngClass]="getGradeColor(grade.grade)"
+            class="grade-row"
+          >
+            <td class="student-name">{{ grade.name }}</td>
+            <td class="subject">{{ grade.subject }}</td>
+            <td class="grade-value">{{ grade.grade }}</td>
+            <td class="date">{{ formatDate(grade.grade_date) }}</td>
+            <td class="actions">
+              <button class="btn btn-sm btn-edit" (click)="openEditForm(grade)">
+                Modifica
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Form di inserimento -->
+  <div *ngIf="showInsertForm()" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Inserisci Nuovo Voto</h2>
+        <button class="btn-close" (click)="closeInsertForm()">×</button>
+      </div>
+
+      <div *ngIf="insertFormErrors().length > 0" class="form-errors">
+        <div *ngFor="let error of insertFormErrors()" class="error-item">
+          {{ error }}
+        </div>
+      </div>
+
+      <form (ngSubmit)="submitInsertForm()" class="form">
+        <div class="form-group">
+          <label for="insertStudentName">Nome Studente *</label>
+          <input
+            id="insertStudentName"
+            type="text"
+            [(ngModel)]="insertFormData().student_name"
+            name="student_name"
+            placeholder="Es. Mario Rossi"
+            class="form-input"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="insertSubject">Materia *</label>
+          <input
+            id="insertSubject"
+            type="text"
+            [(ngModel)]="insertFormData().subject"
+            name="subject"
+            placeholder="Es. Matematica"
+            class="form-input"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="insertGrade">Voto (0-10) *</label>
+          <input
+            id="insertGrade"
+            type="number"
+            [(ngModel)]="insertFormData().grade"
+            name="grade"
+            min="0"
+            max="10"
+            placeholder="Inserisci voto"
+            class="form-input"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="insertGradeDate">Data Voto *</label>
+          <input
+            id="insertGradeDate"
+            type="date"
+            [(ngModel)]="insertFormData().grade_date"
+            name="grade_date"
+            class="form-input"
+            required
+          />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Salva</button>
+          <button type="button" class="btn btn-secondary" (click)="closeInsertForm()">
+            Annulla
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Form di modifica -->
+  <div *ngIf="showEditForm()" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Modifica Voto</h2>
+        <button class="btn-close" (click)="closeEditForm()">×</button>
+      </div>
+
+      <div *ngIf="editFormErrors().length > 0" class="form-errors">
+        <div *ngFor="let error of editFormErrors()" class="error-item">
+          {{ error }}
+        </div>
+      </div>
+
+      <form (ngSubmit)="submitEditForm()" class="form">
+        <div class="form-group">
+          <label for="editSubject">Materia</label>
+          <input
+            id="editSubject"
+            type="text"
+            [(ngModel)]="editFormData().subject"
+            name="subject"
+            placeholder="Es. Matematica"
+            class="form-input"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="editGrade">Voto (0-10)</label>
+          <input
+            id="editGrade"
+            type="number"
+            [(ngModel)]="editFormData().grade"
+            name="grade"
+            min="0"
+            max="10"
+            placeholder="Inserisci voto"
+            class="form-input"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="editGradeDate">Data Voto</label>
+          <input
+            id="editGradeDate"
+            type="date"
+            [(ngModel)]="editFormData().grade_date"
+            name="grade_date"
+            class="form-input"
+          />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Salva Modifiche</button>
+          <button type="button" class="btn btn-secondary" (click)="closeEditForm()">
+            Annulla
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
     --electric-violet: oklch(53.18% 0.28 296.97);
     --french-violet: oklch(47.66% 0.246 305.88);
     --vivid-pink: oklch(69.02% 0.277 332.77);
