@@ -1,0 +1,69 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+venv/
+ENV/
+env/
+
+# Backend
+backend/.env
+backend/.venv
+
+# Frontend (both Angular projects)
+frontend-view/node_modules/
+frontend-view/.angular/
+frontend-view/dist/
+frontend-view/.DS_Store
+frontend-view/*.log
+frontend-view/npm-debug.log*
+frontend-view/yarn-debug.log*
+frontend-view/yarn-error.log*
+
+frontend-crud/node_modules/
+frontend-crud/.angular/
+frontend-crud/dist/
+frontend-crud/.DS_Store
+frontend-crud/*.log
+frontend-crud/npm-debug.log*
+frontend-crud/yarn-debug.log*
+frontend-crud/yarn-error.log*
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/mcp.json
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
