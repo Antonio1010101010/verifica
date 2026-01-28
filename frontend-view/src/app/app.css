@@ -1,0 +1,274 @@
+/* Container principale */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: #333;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 1.5rem;
+}
+
+.header h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2.5rem;
+  color: #007bff;
+}
+
+.header p {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* Sezione di ricerca */
+.search-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.search-section label {
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.search-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* Messaggi di errore e caricamento */
+.error-message {
+  padding: 1rem;
+  margin-bottom: 2rem;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 6px;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+  color: #666;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Sezione senza dati */
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Sezione voti */
+.grades-section {
+  margin-bottom: 2rem;
+}
+
+.grades-list h2 {
+  margin-top: 0;
+  color: #333;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 0.5rem;
+}
+
+/* Tabella voti */
+.grades-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.grades-table thead {
+  background-color: #007bff;
+  color: white;
+}
+
+.grades-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #0056b3;
+}
+
+.grades-table td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.grades-table tbody tr {
+  transition: background-color 0.3s;
+}
+
+.grades-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Classi per colore voto */
+.grade-row.grade-pass {
+  border-left: 5px solid #28a745;
+}
+
+.grade-row.grade-pass td {
+  background-color: #f0f9f6;
+}
+
+.grade-row.grade-pass .grade-value {
+  background-color: #28a745;
+  color: white;
+  font-weight: 700;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  text-align: center;
+  min-width: 50px;
+  display: inline-block;
+}
+
+.grade-row.grade-fail {
+  border-left: 5px solid #dc3545;
+}
+
+.grade-row.grade-fail td {
+  background-color: #fef5f5;
+}
+
+.grade-row.grade-fail .grade-value {
+  background-color: #dc3545;
+  color: white;
+  font-weight: 700;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  text-align: center;
+  min-width: 50px;
+  display: inline-block;
+}
+
+.student-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.subject {
+  color: #666;
+}
+
+.date {
+  color: #999;
+  font-size: 0.9rem;
+}
+
+/* Sezione statistiche */
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.stat-number {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .header h1 {
+    font-size: 1.8rem;
+  }
+
+  .search-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-section label {
+    margin-bottom: 0.5rem;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .grades-table {
+    font-size: 0.9rem;
+  }
+
+  .grades-table th,
+  .grades-table td {
+    padding: 0.5rem;
+  }
+
+  .stats-section {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+  }
+}
